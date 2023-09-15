@@ -1,0 +1,17 @@
+
+
+data_source retail:
+  type: bigquery
+  connection:
+    account_info_json_path: /usr/local/airflow/include/gcp/service_account.json
+    auth_scopes:
+    - https://www.googleapis.com/auth/bigquery
+    - https://www.googleapis.com/auth/cloud-platform
+    - https://www.googleapis.com/auth/drive
+    project_id: 'articulate-case-398313'
+    dataset: retail
+soda_cloud:
+  host: cloud.soda.io
+  api_key_id: 3ca3435c-76ef-418f-8941-a27170d4d944
+  api_key_secret: HImqL-nhSHMK_xAXdrWtk-9VJWVFnZj8yomFTo04YKF5Q70VBbk2nA
+

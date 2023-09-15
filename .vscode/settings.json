@@ -1,0 +1,5 @@
+{
+    "python.analysis.enablePytestSupport": false,
+    "python.analysis.autoSearchPaths": false,
+    "python.analysis.gotoDefinitionInStringLiteral": false
+}

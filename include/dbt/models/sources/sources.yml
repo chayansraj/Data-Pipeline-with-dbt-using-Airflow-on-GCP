@@ -1,0 +1,11 @@
+
+# sources.yml
+version: 2
+
+sources:
+  - name: retail
+    database: articulate-case-398313 # Put the project id!
+
+    tables:
+      - name: raw_online_retail
+      - name: country

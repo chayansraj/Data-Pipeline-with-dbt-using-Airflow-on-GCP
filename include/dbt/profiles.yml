@@ -1,0 +1,14 @@
+# profiles.yml
+
+retail:
+ target: dev
+ outputs:
+  dev:
+    type: bigquery
+    method: service-account
+    keyfile: /usr/local/airflow/include/gcp/service_account.json
+    project: articulate-case-398313
+    dataset: retail
+    threads: 1
+    timeout_seconds: 600
+    location: US

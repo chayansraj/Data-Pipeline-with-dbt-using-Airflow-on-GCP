@@ -1,0 +1,13 @@
+checks for raw_online_retail:
+  - schema:
+      fail:
+        when required column missing: [Invoice, StockCode, Description, Quantity, InvoiceDate, Price, Customer ID, Country]
+        when wrong column type:
+          Invoice: string
+          StockCode: string
+          Description: string
+          Quantity: integer
+          InvoiceDate: string
+          Price: float64
+          Customer ID: float64
+          Country: string
