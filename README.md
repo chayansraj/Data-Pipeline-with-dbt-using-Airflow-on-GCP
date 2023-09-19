@@ -18,6 +18,7 @@ This project demonstrates how to build and automate an ETL pipeline using DAGs i
 The architecture (Data flow) used in this project uses different different tools and languages.
 
 <p align="center">
-  <img width="950" height="550" src="https://github.com/chayansraj/Youtube-data-analytics-using-AWS/assets/22219089/c7c91075-5578-47ce-bf1c-2ded09a8ba0e">
+  <img height="600" src="https://github.com/chayansraj/Orchestrate-Python-ETL-Pipeline-with-DBT-using-Airflow-on-GCP/assets/22219089/c0e1b490-510d-43aa-b34c-9e6ea3c750a5">
   <h6 align = "center" > Source: Author </h6>
 </p>
+
