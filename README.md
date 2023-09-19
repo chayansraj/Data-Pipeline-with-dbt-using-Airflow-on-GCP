@@ -1,4 +1,4 @@
-# Orchestrate Python ETL Pipeline with Astro and DBT using Airflow on GCP
+# Orchestrate Python data Pipeline with Astro, DBT, Soda and Metabase using Airflow on GCP
 
 This project demonstrates how to build and automate an ETL pipeline using DAGs in Airflow and load the transformed data to Bigquery. There are different tools that have been used in this project such as Astro (A docker wrapper around Airflow), DBT (Used for Data Modelling and creating reports using SQL), Soda (Used for Data Quality Checks), Metabase (Containarized Data visualization tool) and Google Cloud Platform for storing the tables.
 
@@ -12,3 +12,12 @@ This project demonstrates how to build and automate an ETL pipeline using DAGs i
 3. Data Transformation - Use DBT to perform data modeling and transform the data into star schema.
 4. Data Loading - Use data pipeline to load the extracted and transformed data into GCP BigQuery.
 5. Data Reporting/Analytics - Use Metabase to create dashboards for reporting or analytics purposes.
+
+# Data Architecture
+
+The architecture (Data flow) used in this project uses different different tools and languages.
+
+<p align="center">
+  <img width="950" height="550" src="https://github.com/chayansraj/Youtube-data-analytics-using-AWS/assets/22219089/c7c91075-5578-47ce-bf1c-2ded09a8ba0e">
+  <h6 align = "center" > Source: Author </h6>
+</p>
