@@ -145,11 +145,29 @@ A DAG (Directed Acyclic Graph) is a core concept and a fundamental building bloc
       ```
 
     <p align="center">
-      <img height="500" src="https://github.com/chayansraj/Orchestrate-Python-ETL-Pipeline-with-DBT-using-Airflow-on-GCP/assets/22219089/66e4d94d-9720-4179-9659-3e3ad06b785d">
+      <img height="450" src="https://github.com/chayansraj/Orchestrate-Python-ETL-Pipeline-with-DBT-using-Airflow-on-GCP/assets/22219089/66e4d94d-9720-4179-9659-3e3ad06b785d">
       <h6 align = "center" > Source: Author </h6>
     </p>
 
+* **Step 3** - You need to register at [soda.io](https://soda.io) to get a connection key to establish connection with BigQuery as our table is stored there. Soda CL can be used to write data quality checks based on your use case. The API key get the credentials to connect soda cloud with airflow, so whenever a check runs, we can see that on our Soda account. Keeping things a bit less complicated, we can setup a simple data type check of each column by writing checks as below:
 
+    <p align="center">
+      <img width = "800" height="240" src="https://github.com/chayansraj/Orchestrate-Python-ETL-Pipeline-with-DBT-using-Airflow-on-GCP/assets/22219089/1b0620d9-d3ab-4414-8be5-5576ba1b84b1">
+      <h6 align = "center" > Source: Author </h6>
+    </p>
+get inside the docker container using > astro dev bash   
+
+
+and run the following command:
+
+```
+soda scan -d retail -c include/soda/configuration.yml include/soda/checks/sources/raw_online_retail.yml
+```
+
+<p align="center">
+  <img width = "800" height="200" src="https://github.com/chayansraj/Orchestrate-Python-ETL-Pipeline-with-DBT-using-Airflow-on-GCP/assets/22219089/180f6af1-4751-4465-97f1-27da9ef96cbc">
+  <h6 align = "center" > Source: Author </h6>
+</p>
 
 
 
