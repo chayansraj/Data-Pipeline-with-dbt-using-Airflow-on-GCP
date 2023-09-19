@@ -54,7 +54,7 @@ This command will create a structure of airflow components in your directory, th
   <h6 align = "center" > Source: Author </h6>
 </p>
 
-After this step, we need to create an account in google cloud with a free tier. Then create a new project with a name of your choice. Make sure to note the project ID and keep it handy as we will use it many different places later on. To let google cloud interact with AIrflow, we need a way to establish a connection and that is done by something called "Service Accounts" in GCP under IAM settings. The connection is between google cloud storage and airflow, so create a storage admin account and a BigQuery admin account in service account settings. Download the key and put it in your 'gcp' folder under 'include' folder.  
+After this step, we need to create an account in google cloud with a free tier. Then create a new project with a name of your choice. Make sure to note the project ID and keep it handy as we will use it many different places later on. To let google cloud interact with AIrflow, we need a way to establish a connection and that is done by something called "Service Accounts" in GCP under IAM settings. The connection is between google cloud storage and airflow, so create a storage admin account and a BigQuery admin account in service account settings. Download the key and put it in your 'gcp' folder under 'include' folder. **Do not share it with anyone**
 
 
 > A connection is a two-way street
@@ -67,12 +67,87 @@ After adding the above command in requirements.txt file, we have to start the do
 ```
 astro dev start
 ```
+If everything is good, you can access the airflow UI at localhost:8080 where we will create a GCP connection using the service account credentials, in the airflow include directory as shown below:
+<p align="center">
+  <img  height="400" src="https://github.com/chayansraj/Orchestrate-Python-ETL-Pipeline-with-DBT-using-Airflow-on-GCP/assets/22219089/154c33b4-fe96-426a-b03c-29d6f233748e">
+  <h6 align = "center" > Source: Author </h6>
+</p>
+
+* **Step 2** - Create the data pipeline using DAGs in Airflow
+A DAG (Directed Acyclic Graph) is a core concept and a fundamental building block. It represents a workflow or a sequence of tasks to be executed, where each task is a unit of work, and the edges between tasks define the order in which they should be executed.
+    * First task:
+          Here the operators are connection methods that are used in Airflow to write custom code to execute a task for different technologies. Operators define what to execute in each task, and they can range from simple operations like running a Python script to more complex tasks like transferring data between systems or executing SQL queries. Operators are Python classes that encapsulate the logic and parameters required for a specific task.
+
+    ```
+    from airflow.decorators import (
+    dag,
+    task,)
+    
+    # DAG and task decorators for interfacing with the TaskFlow API
+    from datetime import datetime
+    from airflow.providers.google.cloud.transfers.local_to_gcs import LocalFilesystemToGCSOperator
+    from airflow.providers.google.cloud.operators.bigquery import BigQueryCreateEmptyDatasetOperator
+    
+    upload_csv_to_gcs = LocalFilesystemToGCSOperator(
+    task_id='upload_csv_to_gcs',
+    src='/usr/local/airflow/include/dataset/online_retail.csv',
+    dst='raw/online_retail.csv',
+    bucket='online_retail_database',
+    gcp_conn_id='gcp',
+    mime_type='text/csv')
+    ```
 
 
+     <p> </p> It's always good to testa task after creating it and so we can do that by running the following command:</p>
 
 
+    ```
+    astro dev bash -> airflow tasks test <DAG name> <Task Name> <Start Date>
+    ```
+    This should store a file in google cloud storage bucket and marke the task as success with corresponding dag id and task id as shown below:
 
+    <p align="center">
+      <img height="35" src="https://github.com/chayansraj/Orchestrate-Python-ETL-Pipeline-with-DBT-using-Airflow-on-GCP/assets/22219089/a5ce63ce-b274-4964-ac96-616950457940">
+      <h6 align = "center" > Source: Author </h6>
+    </p>
 
+    * Second Task:
+      In order to create a SQL table in BigQuery, it should have a "Dataset" in place, within which we can place our relational tables. So this task will create a Dataset inside BigQuery:
+      ```
+      create_retail_dataset = BigQueryCreateEmptyDatasetOperator(
+      task_id='create_retail_dataset',
+      dataset_id='retail',
+      gcp_conn_id='gcp',)
+      ```
+
+    <p align="center">
+      <img height="35" src="https://github.com/chayansraj/Orchestrate-Python-ETL-Pipeline-with-DBT-using-Airflow-on-GCP/assets/22219089/1fcca080-524f-4f43-872b-483285f2c58e">
+      <h6 align = "center" > Source: Author </h6>
+    </p>
+
+    * Thrid Task:
+      We use load file operator using atronomer which will store the csv file into a table in BigQuery:
+      ```
+      gcs_to_raw = aql.load_file(
+  
+          task_id='gcs_to_raw',
+          input_file=File(
+              'gs://online_retail_database/raw/online_retail.csv',
+              conn_id='gcp',
+              filetype=FileType.CSV,
+          ),
+          output_table=Table(
+              name='raw_online_retail',
+              conn_id='gcp',
+              metadata=Metadata(schema='retail')
+          ),
+          use_native_support=False,      )
+      ```
+
+    <p align="center">
+      <img height="500" src="https://github.com/chayansraj/Orchestrate-Python-ETL-Pipeline-with-DBT-using-Airflow-on-GCP/assets/22219089/66e4d94d-9720-4179-9659-3e3ad06b785d">
+      <h6 align = "center" > Source: Author </h6>
+    </p>
 
 
 
