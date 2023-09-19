@@ -36,4 +36,52 @@ Dataset link: [Online Retail Dataset](https://www.kaggle.com/datasets/mashlyn/on
 4. **Astro CLI** - The Astro CLI is the command line interface for data orchestration. It is a part of Astronomer suite and enables an easier way to get started with Apache Airflow and can be used with all Astronomer products. One of the Astro CLI's main features is its ability to run Airflow on your local computer. An Astro project contains the set of files necessary to run Airflow, including dedicated folders for your DAG files, plugins, and dependencies.
 5. **Metabase** - Metabase is an open-source business intelligence (BI) and data analytics tool that allows organizations to easily visualize and analyze their data. It provides a user-friendly interface for creating charts, dashboards, and reports without requiring deep technical or SQL knowledge. Metabase is designed to make data exploration and reporting accessible to a wide range of users within an organization, including business analysts, data analysts, and non-technical stakeholders.
 6. **Visual Code Studio** - Visual Studio Code, often abbreviated as VS Code, is a free, open-source code editor developed by Microsoft. It has become one of the most popular code editors among developers and is widely used for writing and editing code across various programming languages and platforms. VS Code is known for its flexibility, extensive extension marketplace, and a wide range of features that make it suitable for a diverse set of development tasks.
-7. **Git Version Control** - Git is a distributed version control system (VCS) that is widely used in software development and other collaborative projects to track changes in source code, documents, and any other types of files. Version control systems like Git help developers and teams manage the history of changes made to a project's files and collaborate effectively on software development and other creative endeavors.
+7. **Docker** - Docker is a platform and technology that allows developers to package and distribute applications and their dependencies as lightweight containers. These containers are isolated environments that encapsulate an application and all the libraries, dependencies, and configurations it needs to run. Docker containers provide consistency and portability, making it easier to develop, deploy, and scale applications across different environments, such as development, testing, and production, regardless of the underlying infrastructure.
+8. **Git Version Control** - Git is a distributed version control system (VCS) that is widely used in software development and other collaborative projects to track changes in source code, documents, and any other types of files. Version control systems like Git help developers and teams manage the history of changes made to a project's files and collaborate effectively on software development and other creative endeavors.
+
+
+# Implementation
+
+* **Step 1** - Install Astro CLI and create a working Airflow environment with a GCP connection
+  Astro CLI is like a wrapper around docker that makes it easy to setup Airflow locally and all its components such as Webserver, Scheduler, Database and Trigger. It is a containarized method to create an Airflow server. This step requires you to have docker installed in your system with enabled Hyper-V. After installing [Astro CLI](https://docs.astronomer.io/astro/cli/install-cli?tab=windowswithwinget#install-the-astro-cli), run the following command inside an empty directory:
+  ```
+  astro dev init
+  ```
+
+This command will create a structure of airflow components in your directory, that we used to manually create files earlier. The project foler structure is as shown below:
+<p align="center">
+  <img width = "250" height="350" src="https://github.com/chayansraj/Orchestrate-Python-ETL-Pipeline-with-DBT-using-Airflow-on-GCP/assets/22219089/1047a4b0-9ccd-4df9-b225-c4f85c183e35">
+  <h6 align = "center" > Source: Author </h6>
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
