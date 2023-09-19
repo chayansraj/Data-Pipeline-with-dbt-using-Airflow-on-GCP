@@ -42,7 +42,7 @@ Dataset link: [Online Retail Dataset](https://www.kaggle.com/datasets/mashlyn/on
 
 # Implementation
 
-* **Step 1** - Install Astro CLI and create a working Airflow environment with a GCP connection
+* **Step 1** - Install Astro CLI and create a working Airflow environment with a GCP connection.
   Astro CLI is like a wrapper around docker that makes it easy to setup Airflow locally and all its components such as Webserver, Scheduler, Database and Trigger. It is a containarized method to create an Airflow server. This step requires you to have docker installed in your system with enabled Hyper-V. After installing [Astro CLI](https://docs.astronomer.io/astro/cli/install-cli?tab=windowswithwinget#install-the-astro-cli), run the following command inside an empty directory:
   ```
   astro dev init
@@ -54,8 +54,19 @@ This command will create a structure of airflow components in your directory, th
   <h6 align = "center" > Source: Author </h6>
 </p>
 
+After this step, we need to create an account in google cloud with a free tier. Then create a new project with a name of your choice. Make sure to note the project ID and keep it handy as we will use it many different places later on. To let google cloud interact with AIrflow, we need a way to establish a connection and that is done by something called "Service Accounts" in GCP under IAM settings. The connection is between google cloud storage and airflow, so create a storage admin account and a BigQuery admin account in service account settings. Download the key and put it in your 'gcp' folder under 'include' folder.  
 
 
+> A connection is a two-way street
+
+Just like google needs to connect to Airflow, same goes to the other side. In Airflow, there is a big community of "providers", think of it as a package that we can install on top of Airflow core to create more functionalities and interact with different softwares. So, in our case, we will install Airflow google provider
+```
+apache-airflow-providers-google
+```
+After adding the above command in requirements.txt file, we have to start the docker container which can be done as shown below:
+```
+astro dev start
+```
 
 
 
