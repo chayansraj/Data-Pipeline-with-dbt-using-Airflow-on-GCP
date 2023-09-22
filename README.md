@@ -165,7 +165,7 @@ soda scan -d retail -c include/soda/configuration.yml include/soda/checks/source
 ```
 
 <p align="center">
-  <img width = "800" height="170" src="https://github.com/chayansraj/Orchestrate-Python-ETL-Pipeline-with-DBT-using-Airflow-on-GCP/assets/22219089/180f6af1-4751-4465-97f1-27da9ef96cbc">
+  <img width = "800" height="150" src="https://github.com/chayansraj/Orchestrate-Python-ETL-Pipeline-with-DBT-using-Airflow-on-GCP/assets/22219089/180f6af1-4751-4465-97f1-27da9ef96cbc">
   <h6 align = "center" > Source: Author </h6>
 </p>
 
