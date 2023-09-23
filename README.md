@@ -185,17 +185,100 @@ def check_load(scan_name='check_load', checks_subpath='sources'):
     from include.soda.check_function import check
 
     return check(scan_name, check_subpath)
+
+check_load()
 ```
+
 The corresponding 'check_function' that will run in the python environment and will be called from our DAG is in repo files. **Whenever we use a decorator inside our DAG, we need to explicitly call that task inside the DAG**
 
-* **Step 4** - Use DBT for data modelling and create fact and dimension tables.
-  This is star schema data modelling in practice where we have a fact table sorrounded by dimension tables. Fact table keeps all the numerical and keys of the database and dimension tables contains context and background information such as product, customer, datetime, etc. We use cosmos to integrate dbt with airflow, cosmos will allow more information about the processes inside the dbt models. Each model becomes a task inside the DAG providing better obeservability. Cosmos will execute the dbt models inside a virtual python environment, so we create a new virtual environment for the same:
+* **Step 4** - Use DBT to transform the data and create fact and dimension tables.
+  This is star schema data modelling in practice where we have a fact table sorrounded by dimension tables. Fact table keeps all the numerical and keys of the database and dimension tables contains context and background information such as product, customer, datetime, etc.
+<p align="center">
+  <img width = "550" height="290" src="https://github.com/chayansraj/Python-ETL-Pipeline-with-DBT-using-Airflow-on-GCP/assets/22219089/e7b02c6b-262f-463e-abda-6bccc72f6d28">
+  <h6 align = "center" > Source: Author </h6>
+</p>
+
+
+
+  We use cosmos to integrate dbt with airflow, cosmos will allow more information about the processes inside the dbt models. Each model becomes a task inside the DAG providing better obeservability. Cosmos will execute the dbt models inside a virtual python environment, so we create a new virtual environment for the same:
 
   ```
   RUN python -m venv dbt_venv && source dbt_venv/bin/activate && \
     pip install --no-cache-dir dbt-bigquery==1.5.3 && deactivate
   ```
-  All the profile.yml, dbt_project.yml and packages.yml files are uploaded in files section.
+  All the profile.yml, dbt_project.yml, sources.yml and packages.yml files are uploaded in files section. All the .sql files are also uploaded. After running the dbt models using dbt cli, we can see four tables inside bigquery:
+
+  <p align="center">
+  <img width = "700" height="230" src="https://github.com/chayansraj/Python-ETL-Pipeline-with-DBT-using-Airflow-on-GCP/assets/22219089/2cdeb95e-cb9c-4cab-bfd4-5f44ee3341c8">
+  <h6 align = "center" > Source: Author </h6>
+  </p>
+
+  Now we can integrate dbt models within the DAG for airflow to run that task:
+  ```
+  transform = DbtTaskGroup(
+    group_id = 'transform',
+    project_config = DBT_PROJECT_CONFIG,
+    profile_config = DBT_CONFIG,
+    render_config = RenderConfig(
+        load_method = LoadMode.DBT_LS,
+        select=['path:models/transform']
+    ))
+```
+With this task implemented, we can go over the airflow UI and check the DAG to see those in a more granular way as shown below:
+  <p align="center">
+  <img width = "500" height="270" src="https://github.com/chayansraj/Python-ETL-Pipeline-with-DBT-using-Airflow-on-GCP/assets/22219089/0452245e-2fa7-41d0-a30d-2cd95e4dd026">
+  <h6 align = "center" > Source: Author </h6>
+  </p>
+  Similarly, we can implement the same for reporting models using sql and dbt. 
+
+* **Step 5** - We repeat the step 3 to run the data quality checks after we have transformed our data into fact and dimension tables. The quality check files for transformation is given in files section. We create another task in the DAG that will check the transformed tables.
+
+```
+@task.external_python(python='/usr/local/airflow/soda_venv/bin/python')
+def check_transform(scan_name='check_transform', checks_subpath='transform'):
+    from include.soda.check_function import check
+
+    return check(scan_name, checks_subpath)
+```
+The corresponding 'check_function' that will run in the python environment and will be called from our DAG is in repo files.
+
+Now it's time to create a chain of tasks for airflow to know the direction of tasks to perform squentially. It is done using chain method inside DAGs as shown below:
+
+```
+chain(
+    upload_csv_to_gcs,
+    create_retail_dataset,
+    gcs_to_raw,
+    check_load(),
+    transform,
+    check_transform(),
+    report,
+    check_report(),
+)
+```
+
+  <p align="center">
+  <img width = "800" height="50" src="https://github.com/chayansraj/Python-ETL-Pipeline-with-DBT-using-Airflow-on-GCP/assets/22219089/cf6788d7-227a-48a2-a3da-cbef921ee53a">
+  <h6 align = "center" > Source: Author </h6>
+  </p>
+
+
+* **Step 6** - Creating a dashboard using Metabase which is an opensourse data visualization and analytics platform. It will running locally on our machine and runs on localhost. To run metabase, we create a docker-compose override file as shown below:
+
+  ```
+  version: "3.1"
+  services:
+  metabase:
+    image: metabase/metabase:v0.46.6.4
+    volumes:
+      - ./include/metabase-data:/metabase-data
+    environment:
+      - MB_DB_FILE=/metabase-data/metabase.db
+    ports:
+      - 3000:3000
+    restart: always
+  ```
+We restart the airflow instance and we can start accessing metabase from localhost:3000. 
 
 
 
