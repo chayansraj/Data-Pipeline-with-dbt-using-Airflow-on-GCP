@@ -279,10 +279,15 @@ chain(
     restart: always
   ```
 We restart the airflow instance and we can start accessing metabase from localhost:3000. 
+Using the tables above and performing data analytics, we can finally create a dashboard.
+
+  <p align="center">
+  <img  height="700" src="https://github.com/chayansraj/Python-ETL-Pipeline-with-DBT-using-Airflow-on-GCP/assets/22219089/83498c85-96bb-41b1-b7cc-523e3f8df982">
+  <h6 align = "center" > Source: Author </h6>
+  </p>
 
 
-
-
+**The End**
 
 
 
