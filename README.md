@@ -145,7 +145,7 @@ A DAG (Directed Acyclic Graph) is a core concept and a fundamental building bloc
       ```
 
     <p align="center">
-      <img height="450" src="https://github.com/chayansraj/Orchestrate-Python-ETL-Pipeline-with-DBT-using-Airflow-on-GCP/assets/22219089/66e4d94d-9720-4179-9659-3e3ad06b785d">
+      <img height="390" src="https://github.com/chayansraj/Orchestrate-Python-ETL-Pipeline-with-DBT-using-Airflow-on-GCP/assets/22219089/66e4d94d-9720-4179-9659-3e3ad06b785d">
       <h6 align = "center" > Source: Author </h6>
     </p>
 
@@ -168,15 +168,34 @@ soda scan -d retail -c include/soda/configuration.yml include/soda/checks/source
   <img width = "800" height="150" src="https://github.com/chayansraj/Orchestrate-Python-ETL-Pipeline-with-DBT-using-Airflow-on-GCP/assets/22219089/180f6af1-4751-4465-97f1-27da9ef96cbc">
   <h6 align = "center" > Source: Author </h6>
 </p>
+But, if we modigy any check, for example, let's say we purposefuly change the datatype of numeric column to string. It will throw an error.
+Now to create data quality check within our DAG, for this, we will use Python external task. This task allows any python code in any external virtual environment to be executed inside the DAG. This will prevent any dependency conflict with any other open source tool you are using. To create a python vistual environment and activate it, we will modify the Dockerfile as follows: 
 
+```
+RUN python -m venv soda_venv && source soda_venv/bin/activate && \
+    pip install --no-cache-dir soda-core-bigquery==3.0.45 &&\
+    pip install --no-cache-dir soda-core-scientific==3.0.45 && deactivate
+```
+This includes the soda library along with its dependencies to interact with google bigquery. It activates the environment, installs the library and then deactivates it. 
+Python external task in DAG:
 
+```
+@task.external_python(python='/usr/local/airflow/soda_venv/bin/python')
+def check_load(scan_name='check_load', checks_subpath='sources'):
+    from include.soda.check_function import check
 
+    return check(scan_name, check_subpath)
+```
+The corresponding 'check_function' that will run in the python environment and will be called from our DAG is in repo files. **Whenever we use a decorator inside our DAG, we need to explicitly call that task inside the DAG**
 
+* **Step 4** - Use DBT for data modelling and create fact and dimension tables.
+  This is star schema data modelling in practice where we have a fact table sorrounded by dimension tables. Fact table keeps all the numerical and keys of the database and dimension tables contains context and background information such as product, customer, datetime, etc. We use cosmos to integrate dbt with airflow, cosmos will allow more information about the processes inside the dbt models. Each model becomes a task inside the DAG providing better obeservability. Cosmos will execute the dbt models inside a virtual python environment, so we create a new virtual environment for the same:
 
-
-
-
-
+  ```
+  RUN python -m venv dbt_venv && source dbt_venv/bin/activate && \
+    pip install --no-cache-dir dbt-bigquery==1.5.3 && deactivate
+  ```
+  All the profile.yml, dbt_project.yml and packages.yml files are uploaded in files section.
 
 
 
