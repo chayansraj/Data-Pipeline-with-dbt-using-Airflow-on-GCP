@@ -97,7 +97,7 @@ A DAG (Directed Acyclic Graph) is a core concept and a fundamental building bloc
     ```
 
 
-     <p> </p> It's always good to testa task after creating it and so we can do that by running the following command:</p>
+     <p> </p> It's always good to test a task after creating it and so we can do that by running the following command:</p>
 
 
     ```
