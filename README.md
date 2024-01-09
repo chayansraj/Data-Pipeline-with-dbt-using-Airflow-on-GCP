@@ -4,6 +4,8 @@ This project demonstrates how to build and automate data pipeline using DAGs in 
 
 
 
+
+
 # Project Goals - To try new tools and learn!
 
 0. There has been a deulge of new tools and technologies in the market accentuating the data engineering field and the best way to keep abreast is to pry them out and do hands-on. So, in this project there are a lot of new tools that I have used to create an effective and robust data pipeline. It goes without saying that when there are more tools involved, the integration of the tools (because of dependencies or much worse "dependency hell" :scream: ) becomes a big hassle but at the same time, it allows us to understand the nitty gritties of the architecture. 
