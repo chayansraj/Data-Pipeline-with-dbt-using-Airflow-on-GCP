@@ -9,8 +9,6 @@ This project demonstrates how to build and automate data pipeline using DAGs in 
 
 
 
-
-
 1. Data Ingestion - Create a data ingestion pipeline to extract new incoming data into the GCP BigQuery.
 2. Data Quality - Use Soda to create highly customized data quality checks using yml files.
 3. Data Transformation - Use DBT to perform data modeling and transform the data into star schema.
